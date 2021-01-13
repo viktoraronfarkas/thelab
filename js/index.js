@@ -1,5 +1,6 @@
 import Player from './Player.js';
+import Camera from './Camera.js';
 
 import {
-  resizeCanvas,
+  init,
 } from './utils.js';
