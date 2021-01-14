@@ -3,3 +3,25 @@ html {
   width: 100%;
   overflow: hidden;
 }
+
+body {
+  margin: 0;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: #000000;
+}
+
+canvas {
+  &#stage {
+    background-image: url('./assets/start_screen.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: block;
+    border-radius: 10px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
