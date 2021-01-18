@@ -1,10 +1,10 @@
-import { CONFIG } from './config.js';
+import CONFIG from './config.js';
 
 class Background {
   constructor() {
     console.log('Background created!');
-    this.width = getElementById('stage').offsetWidth;
-    this.height = getElementById('stage').offsetHeight;
+    this.width = document.getElementById('stage').offsetWidth;
+    this.height = document.getElementById('stage').offsetHeight;
     this.background = new Image();
     this.currentLevel = 0;
     this.background.src = `assets/level${this.currentLevel}.png`;
