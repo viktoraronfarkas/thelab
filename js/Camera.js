@@ -1,3 +1,5 @@
+import CONFIG from './config.js';
+
 class Camera {
 
 }
