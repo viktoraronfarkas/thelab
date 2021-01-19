@@ -10,8 +10,8 @@ class Background {
     this.background.src = `assets/level${this.currentLevel}.png`;
   }
 
-  render() {
-    context.drawImage(this.image, 0, 0, this.width, this.height);
+  render(context) {
+    context.drawImage(this.background, 0, 0, this.width, this.height);
   }
 
   update() {

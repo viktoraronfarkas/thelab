@@ -20,7 +20,7 @@ class Player {
 
     // load image
     this.image = new Image();
-    this.image.src = './player_still.png';
+    this.image.src = 'assets/level0.png';
 
     // listen for keydown events
     document.addEventListener('keydown', (event) => {
@@ -31,6 +31,10 @@ class Player {
     document.addEventListener('keyup', (event) => {
       this.currentKeys[event.code] = false;
     });
+  }
+
+  render() {
+    
   }
 
   update() {
