@@ -6,6 +6,7 @@ import { renderText, setupCanvas } from './utils.js';
 
 let context;
 let textContext;
+let playerContext;
 let player;
 let camera;
 let background;
@@ -18,9 +19,12 @@ let init = () => {
   context = canvas.getContext('2d');
   let textCanvas = document.getElementById('text-stage');
   textContext = textCanvas.getContext('2d');
+  let playerCanvas = document.getElementById('player-stage');
+  playerContext = playerCanvas.getContext('2d');
 
   setupCanvas(canvas);
   setupCanvas(textCanvas);
+  setupCanvas(playerCanvas);
 
   // start measuring time
   // TODO: implement time limit (??)
@@ -46,9 +50,15 @@ let gameLoop = () => {
   player.update();
 
   context.clearRect(0, 0, CONFIG.levelWidth, CONFIG.levelHeight); //clear canvas
+  playerContext.clearRect(0, 0, CONFIG.levelWidth, CONFIG.levelHeight);
   background.render(context); // render Background
   camera.render(context); // render Camera
-  player.render(context); // render Player
+
+  player.update();
+
+  if (0 !== background.currentLevel) {
+    player.render(playerContext); // render Player
+  }
 
   textContext.clearRect(0, 0, CONFIG.levelWidth, CONFIG.levelHeight);
 
@@ -65,6 +75,7 @@ let gameLoop = () => {
 
   // Next level
   if (player.x + player.width / 2 > CONFIG.levelWidth) {
+    player.x = 0;
     background.nextLevel();
   }
 
