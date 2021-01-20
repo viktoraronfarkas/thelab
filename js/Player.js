@@ -4,10 +4,10 @@ class Player {
   constructor() {
     console.log("Player created!");
 
-    this.x = 150;
-    this.y = 150;
-    this.width = 150;
-    this.height = 150;
+    this.x = 0;
+    this.y = CONFIG.groundPosition - CONFIG.playerHeight;
+    this.width = CONFIG.playerWidth;
+    this.height = CONFIG.playerHeight;
     this.deltaX = 0; // +1 -> go right, -1 -> go left
     this.currentKeys = []; // list of currently pressed keys
     this.speed = CONFIG.playerSpeed; // speed factor
@@ -17,10 +17,9 @@ class Player {
   }
 
   init() {
-
     // load image
     this.image = new Image();
-    this.image.src = 'assets/level0.png';
+    this.image.src = 'assets/player_still.png';
 
     // listen for keydown events
     document.addEventListener('keydown', (event) => {
@@ -33,18 +32,12 @@ class Player {
     });
   }
 
-  render() {
-    
-  }
-
   update() {
-    if (this.currentKeys['ArrowRight'] === true) {
-      this.deltaX = +1;
-    }
-    else if (this.currentKeys['ArrowLeft'] === true) {
+    if (this.currentKeys['ArrowRight'] === true || this.currentKeys['KeyD'] === true) {
+      this.deltaX = 1;
+    } else if (this.currentKeys['ArrowLeft'] === true || this.currentKeys['KeyA'] === true) {
       this.deltaX = -1;
-    }
-    else {
+    } else {
       this.deltaX = 0;
     }
 
@@ -55,7 +48,13 @@ class Player {
       //TODO
     }
 
-    // set x, y to new values
+    if (this.currentKeys['ShiftLeft'] === true) {
+      this.speed = CONFIG.playerSpeed * 2;
+    } else {
+      this.speed = CONFIG.playerSpeed;
+    }
+
+    // set x to new values
     this.x = this.x + this.deltaX * this.speed;
 
     // check for boundaries
@@ -65,8 +64,21 @@ class Player {
     if (this.y + this.height / 2 > CONFIG.groundPosition) {
       this.y = CONFIG.groundPosition - this.height / 2;
     }
-
   }
+
+  render(ctx) {
+    ctx.translate(this.x, 0);
+
+    if (-1 === this.deltaX) {
+      ctx.scale(-1, 1);
+    }
+
+    // draw image
+    ctx.drawImage(this.image, -this.width/2, this.y, this.width, this.height);
+
+    ctx.resetTransform(); // <-- end transform matrix
+  }
+
 }
 
 export default Player;

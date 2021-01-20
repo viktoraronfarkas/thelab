@@ -28,7 +28,8 @@ canvas {
     transform: translate(-50%, -50%);
   }
 
-  &#text-stage {
+  &#text-stage,
+  &#player-stage {
     display: block;
     position: absolute;
     transform: translate(-50%, -50%);
