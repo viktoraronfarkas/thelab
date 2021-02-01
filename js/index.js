@@ -72,6 +72,7 @@ let gameLoop = () => {
   // Start game
   if (0 === background.currentLevel && true === currentKeys['Enter']) {
     background.nextLevel();
+    player.y = 0;
   }
 
   // Next level
