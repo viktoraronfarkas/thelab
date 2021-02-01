@@ -49,8 +49,8 @@ let init = () => {
 let gameLoop = () => {
   player.update();
 
-  context.clearRect(0, 0, CONFIG.levelWidth, CONFIG.levelHeight); //clear canvas
-  playerContext.clearRect(0, 0, CONFIG.levelWidth, CONFIG.levelHeight);
+  context.clearRect(0, 0, CONFIG.level.width, CONFIG.level.height); //clear canvas
+  playerContext.clearRect(0, 0, CONFIG.level.width, CONFIG.level.height);
   background.render(context); // render Background
   camera.render(context); // render Camera
 
@@ -60,12 +60,12 @@ let gameLoop = () => {
     player.render(playerContext); // render Player
   }
 
-  textContext.clearRect(0, 0, CONFIG.levelWidth, CONFIG.levelHeight);
+  textContext.clearRect(0, 0, CONFIG.level.width, CONFIG.level.height);
 
   if (0 === background.currentLevel) {
     renderText(textContext);
   } else {
-    textContext.clearRect(0, 0, CONFIG.width, CONFIG.height);
+    textContext.clearRect(0, 0, CONFIG.level.width, CONFIG.level.height);
   }
 
   // Start game
@@ -74,7 +74,7 @@ let gameLoop = () => {
   }
 
   // Next level
-  if (player.x + player.width / 2 > CONFIG.levelWidth) {
+  if (player.x + player.width / 2 > CONFIG.level.width) {
     player.x = 0;
     background.nextLevel();
   }

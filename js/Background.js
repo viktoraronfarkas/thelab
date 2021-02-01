@@ -19,7 +19,7 @@ class Background {
   }
 
   nextLevel() {
-    this.currentLevel < CONFIG.numberOfLevels ? this.currentLevel++ : console.log('Already on last level, cannot cll next one.');
+    this.currentLevel < CONFIG.level.numberOfLevels ? this.currentLevel++ : console.log('Already on last level, cannot cll next one.');
     this.background.src = `assets/level${this.currentLevel}.png`;
   }
 }
