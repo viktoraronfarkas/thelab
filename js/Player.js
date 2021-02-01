@@ -16,10 +16,12 @@ class Player {
     this.walkingSprite = null;
     this.walking = null;
     this.running = null;
+    this.isWalking = null;
     this.isRunning = false;
+    this.facingLeft = false;
     this.ticks = 0;
     this.lastRenderedTime = null;
-    //this.runningSprite = null;
+    this.runningSprite = null;
 
     this.init();
   }
@@ -28,9 +30,10 @@ class Player {
     // load image
     this.playerStill = new Image();
     this.walkingSprite = new Image();
-    //this.runningSprite = new Image();
+    this.runningSprite = new Image();
     this.playerStill.src = 'assets/player_still.png';
     this.walkingSprite.src = 'assets/player_walking.png';
+    this.runningSprite.src = 'assets/player_running.png';
 
     this.image = this.playerStill;
 
@@ -48,13 +51,18 @@ class Player {
   update() {
     if (this.currentKeys['ArrowRight'] === true || this.currentKeys['KeyD'] === true) {
       this.deltaX = 1;
+      this.isWalking = true;
+      this.facingLeft = false;
       this.image = this.walkingSprite;
     } else if (this.currentKeys['ArrowLeft'] === true || this.currentKeys['KeyA'] === true) {
       this.deltaX = -1;
+      this.isWalking = true;
+      this.facingLeft = true;
       this.image = this.walkingSprite;
     } else {
       this.deltaX = 0;
       this.image = this.playerStill;
+      this.isWalking = false;
       this.isRunning = false;
     }
 
@@ -65,9 +73,10 @@ class Player {
       //TODO
     }
 
-    if (this.currentKeys['ShiftLeft'] === true) {
+    if (true === this.currentKeys['ShiftLeft'] && true === this.isWalking) {
       this.speed = CONFIG.player.speed * 2;
-      //this.isRunning = true;
+      this.image = this.runningSprite;
+      this.isRunning = true;
     } else {
       this.speed = CONFIG.player.speed;
       this.isRunning = false;
@@ -105,7 +114,7 @@ class Player {
 
     ctx.translate(this.x, 0);
 
-    if (-1 === this.deltaX) {
+    if (true === this.facingLeft) {
       ctx.scale(-1, 1);
     }
 
@@ -117,8 +126,8 @@ class Player {
       coords.sHeight,
       -this.width/2,
       this.y,
-      this.width,
-      this.height
+      coords.dWidth,
+      coords.dHeight
     );
 
     ctx.resetTransform(); // <-- end transform matrix
@@ -140,6 +149,8 @@ class Player {
       sY: 0,
       sWidth: frameWidth,
       sHeight: config.height,
+      dWidth: frameWidth,
+      dHeight: this.height,
     }
 
     return coords;

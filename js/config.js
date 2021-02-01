@@ -27,5 +27,11 @@ export default {
       frames: 4,
       fpt: 0.2,
     },
+    running: {
+      width: 708,
+      height: 240,
+      frames: 4,
+      fpt: 0.3,
+    },
   },
 }
