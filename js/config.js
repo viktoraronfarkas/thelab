@@ -8,7 +8,7 @@ export default {
   player: {
     width: 129,
     height: 240,
-    speed: 0.15,
+    speed: 0.3,
   },
   startText: {
     x: 265,

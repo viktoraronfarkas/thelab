@@ -26,8 +26,6 @@ let init = () => {
   setupCanvas(textCanvas);
   setupCanvas(playerCanvas);
 
-  // start measuring time
-  // TODO: implement time limit (??)
   background = new Background();
   player = new Player();
   camera = new Camera();
@@ -53,8 +51,6 @@ let gameLoop = () => {
   playerContext.clearRect(0, 0, CONFIG.level.width, CONFIG.level.height);
   background.render(context); // render Background
   camera.render(context); // render Camera
-
-  player.update();
 
   if (0 !== background.currentLevel) {
     player.render(playerContext); // render Player
