@@ -7,6 +7,7 @@ import { renderText, setupCanvas } from './utils.js';
 let context;
 let textContext;
 let playerContext;
+let cameraContext;
 let player;
 let camera;
 let background;
@@ -21,10 +22,13 @@ let init = () => {
   textContext = textCanvas.getContext('2d');
   let playerCanvas = document.getElementById('player-stage');
   playerContext = playerCanvas.getContext('2d');
+  let cameraCanvas = document.getElementById('camera-stage');
+  cameraContext = cameraCanvas.getContext('2d');
 
   setupCanvas(canvas);
   setupCanvas(textCanvas);
   setupCanvas(playerCanvas);
+  setupCanvas(cameraCanvas);
 
   background = new Background();
   player = new Player();
@@ -49,11 +53,12 @@ let gameLoop = () => {
 
   context.clearRect(0, 0, CONFIG.level.width, CONFIG.level.height); //clear canvas
   playerContext.clearRect(0, 0, CONFIG.level.width, CONFIG.level.height);
+  cameraContext.clearRect(0, 0, CONFIG.level.width, CONFIG.level.height);
   background.render(context); // render Background
-  camera.render(context); // render Camera
 
   if (0 !== background.currentLevel) {
     player.render(playerContext); // render Player
+    camera.render(cameraContext); // render Camera
   }
 
   textContext.clearRect(0, 0, CONFIG.level.width, CONFIG.level.height);
@@ -73,6 +78,15 @@ let gameLoop = () => {
   if (player.x + player.width / 2 > CONFIG.level.width) {
     player.x = 0;
     background.nextLevel();
+  }
+
+  // Flip Camera
+  if (player.x + player.width / 2 > CONFIG.level.width / 2) {
+    camera.dir = 'right';
+  }
+
+  if (player.x + player.width / 2 < CONFIG.level.width / 2) {
+    camera.dir = 'left';
   }
 
   // call the next iteration of the gameloop

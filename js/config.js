@@ -10,6 +10,10 @@ export default {
     height: 240,
     speed: 0.3,
   },
+  camera: {
+    width: 48,
+    height: 45,
+  },
   startText: {
     x: 265,
     y: 320,
