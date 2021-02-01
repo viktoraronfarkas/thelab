@@ -74,7 +74,7 @@ class Player {
     }
 
     if (true === this.currentKeys['ShiftLeft'] && true === this.isWalking) {
-      this.speed = CONFIG.player.speed * 2;
+      this.speed = CONFIG.player.speed * 2.5;
       this.image = this.runningSprite;
       this.isRunning = true;
     } else {
