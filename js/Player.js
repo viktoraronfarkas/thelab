@@ -5,21 +5,34 @@ class Player {
     console.log("Player created!");
 
     this.x = 0;
-    this.y = CONFIG.groundPosition - CONFIG.playerHeight;
-    this.width = CONFIG.playerWidth;
-    this.height = CONFIG.playerHeight;
+    this.y = CONFIG.level.groundPosition - CONFIG.player.height;
+    this.width = CONFIG.player.width;
+    this.height = CONFIG.player.height;
     this.deltaX = 0; // +1 -> go right, -1 -> go left
     this.currentKeys = []; // list of currently pressed keys
-    this.speed = CONFIG.playerSpeed; // speed factor
+    this.speed = CONFIG.player.speed; // speed factor
     this.image = null;
+    this.playerStill = null;
+    this.walkingSprite = null;
+    this.walking = null;
+    this.running = null;
+    this.isRunning = false;
+    this.ticks = 0;
+    this.lastRenderedTime = null;
+    //this.runningSprite = null;
 
     this.init();
   }
 
   init() {
     // load image
-    this.image = new Image();
-    this.image.src = 'assets/player_still.png';
+    this.playerStill = new Image();
+    this.walkingSprite = new Image();
+    //this.runningSprite = new Image();
+    this.playerStill.src = 'assets/player_still.png';
+    this.walkingSprite.src = 'assets/player_walking.png';
+
+    this.image = this.playerStill;
 
     // listen for keydown events
     document.addEventListener('keydown', (event) => {
@@ -35,10 +48,14 @@ class Player {
   update() {
     if (this.currentKeys['ArrowRight'] === true || this.currentKeys['KeyD'] === true) {
       this.deltaX = 1;
+      this.image = this.walkingSprite;
     } else if (this.currentKeys['ArrowLeft'] === true || this.currentKeys['KeyA'] === true) {
       this.deltaX = -1;
+      this.image = this.walkingSprite;
     } else {
       this.deltaX = 0;
+      this.image = this.playerStill;
+      this.isRunning = false;
     }
 
     // spacebar -> jump
@@ -49,36 +66,84 @@ class Player {
     }
 
     if (this.currentKeys['ShiftLeft'] === true) {
-      this.speed = CONFIG.playerSpeed * 2;
+      this.speed = CONFIG.player.speed * 2;
+      //this.isRunning = true;
     } else {
-      this.speed = CONFIG.playerSpeed;
+      this.speed = CONFIG.player.speed;
+      this.isRunning = false;
     }
 
-    // set x to new values
-    this.x = this.x + this.deltaX * this.speed;
+    // how many milliseconds have passed since the last render()
+    let millisecondsSinceLastRender = performance.now() - this.lastRenderedTime;
+    // how many pixels should the player move?
+    let moveBy = millisecondsSinceLastRender * this.speed;
+
+    this.x = this.x + this.deltaX * moveBy;
 
     // check for boundaries
     if (this.x - this.width / 2 < 0) {
       this.x = this.width / 2;
     }
-    if (this.y + this.height / 2 > CONFIG.groundPosition) {
-      this.y = CONFIG.groundPosition - this.height / 2;
+    if (this.y + this.height / 2 > CONFIG.level.groundPosition) {
+      this.y = CONFIG.level.groundPosition - this.height / 2;
     }
   }
 
   render(ctx) {
+    let coords;
+    let config;
+
+    if (0 === this.deltaX) {
+      config = CONFIG.sprite.idle;
+    } else if (0 !== this.deltaX && false === this.isRunning) {
+      config = CONFIG.sprite.walking;
+    } else if (0 !== this.deltaX && true === this.isRunning) {
+      config = CONFIG.sprite.running;
+    }
+
+    coords = this.getCurrentFrame(config);
+
     ctx.translate(this.x, 0);
 
     if (-1 === this.deltaX) {
       ctx.scale(-1, 1);
     }
 
-    // draw image
-    ctx.drawImage(this.image, -this.width/2, this.y, this.width, this.height);
+    ctx.drawImage(
+      this.image,
+      coords.sX,
+      coords.sY,
+      coords.sWidth,
+      coords.sHeight,
+      -this.width/2,
+      this.y,
+      this.width,
+      this.height
+    );
 
     ctx.resetTransform(); // <-- end transform matrix
+
+    this.ticks++;
+
+    this.lastRenderedTime = performance.now();
   }
 
+  getCurrentFrame = (config) => {
+    let frames = config.frames;
+
+    // get the frame number
+    let currentFrame = Math.floor(this.ticks * config.fpt % frames);
+    let frameWidth = config.width / config.frames;
+
+    let coords = {
+      sX: currentFrame * frameWidth,
+      sY: 0,
+      sWidth: frameWidth,
+      sHeight: config.height,
+    }
+
+    return coords;
+  }
 }
 
 export default Player;
