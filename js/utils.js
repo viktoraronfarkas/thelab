@@ -11,12 +11,12 @@ const renderText = (ctx) => {
 
 const setupCanvas = (cvs) => {
   // set width/height of the DOM element
-  cvs.setAttribute('width', CONFIG.levelWidth);
-  cvs.setAttribute('height', CONFIG.levelHeight);
+  cvs.setAttribute('width', CONFIG.level.width);
+  cvs.setAttribute('height', CONFIG.level.height);
   console.log('Dimensions of DOM element set!');
 
-  cvs.style.width = CONFIG.levelWidth + 'px';
-  cvs.style.height = CONFIG.levelHeight + 'px';
+  cvs.style.width = CONFIG.level.width + 'px';
+  cvs.style.height = CONFIG.level.height + 'px';
   console.log('Dimensions set in stylesheet!');
 }
 
