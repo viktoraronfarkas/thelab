@@ -9,6 +9,7 @@ class Player {
     this.width = CONFIG.player.width;
     this.height = CONFIG.player.height;
     this.deltaX = 0; // +1 -> go right, -1 -> go left
+    this.vY = 0; // y velocity
     this.currentKeys = []; // list of currently pressed keys
     this.speed = CONFIG.player.speed; // speed factor
     this.image = null;
@@ -18,6 +19,7 @@ class Player {
     this.running = null;
     this.isWalking = null;
     this.isRunning = false;
+    this.isJumping = false;
     this.facingLeft = false;
     this.ticks = 0;
     this.lastRenderedTime = null;
@@ -67,14 +69,13 @@ class Player {
     }
 
     // spacebar -> jump
-    if (this.currentKeys['Space'] === true) {
-      //TODO
-    } else {
-      //TODO
+    if (true === this.currentKeys['Space'] && false === this.isJumping) {
+      this.vY -= 30;
+      this.isJumping = true;
     }
 
     if (true === this.currentKeys['ShiftLeft'] && true === this.isWalking) {
-      this.speed = CONFIG.player.speed * 2.5;
+      this.speed = CONFIG.player.speed * 2;
       this.image = this.runningSprite;
       this.isRunning = true;
     } else {
@@ -84,17 +85,24 @@ class Player {
 
     // how many milliseconds have passed since the last render()
     let millisecondsSinceLastRender = performance.now() - this.lastRenderedTime;
+
     // how many pixels should the player move?
     let moveBy = millisecondsSinceLastRender * this.speed;
 
+    this.vY += 1.5;
     this.x = this.x + this.deltaX * moveBy;
+    this.y = this.y + this.vY;
+    this.vY = this.vY * 0.9;
 
     // check for boundaries
     if (this.x - this.width / 2 < 0) {
       this.x = this.width / 2;
     }
+
     if (this.y + this.height / 2 > CONFIG.level.groundPosition) {
       this.y = CONFIG.level.groundPosition - this.height / 2;
+      this.isJumping = false;
+      this.vY = 0;
     }
   }
 
@@ -112,7 +120,7 @@ class Player {
 
     coords = this.getCurrentFrame(config);
 
-    ctx.translate(this.x, 0);
+    ctx.translate(this.x, this.y);
 
     if (true === this.facingLeft) {
       ctx.scale(-1, 1);
@@ -124,8 +132,8 @@ class Player {
       coords.sY,
       coords.sWidth,
       coords.sHeight,
-      -this.width/2,
-      this.y,
+      -this.width / 2,
+      -this.height / 2,
       coords.dWidth,
       coords.dHeight
     );
