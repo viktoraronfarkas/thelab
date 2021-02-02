@@ -18,7 +18,7 @@ export default {
     holes: {},
     walls: {
       wall1: {
-        x: 570,
+        x: 650,
         y: null,
         width: 60,
         height: 570,

@@ -104,6 +104,11 @@ let checkForObstacles = (bg, player, obstacles) => {
     player.isFalling = true;
     player.y++;
   }
+
+  // first wall -> only go through when running
+  if (3 === bg.currentLevel && obstacles[2].walls[0].x - player.width < player.x && obstacles[2].walls[0].x + obstacles[2].walls[0].width - player.width > player.x && !player.isRunning && !player.facingLeft) {
+    player.x = obstacles[2].walls[0].x - player.width;
+  }
 }
 
 window.addEventListener('load', function() {
