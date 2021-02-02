@@ -1,6 +1,6 @@
 export default {
   level: {
-    numberOfLevels: 10,
+    numberOfLevels: 8,
     width: 1200,
     height: 675,
     groundPosition: 577,
