@@ -104,7 +104,7 @@ class Player {
       this.y = CONFIG.level.groundPosition - this.height / 2;
       this.isJumping = false;
       this.vY = 0;
-    } else if (this.isFalling && this.y + this.height / 2 > CONFIG.level.height) {
+    } else if (this.isFalling && this.y + this.height / 2 > CONFIG.level.height + this.height) {
       this.y = 0;
       this.isJumping = false;
       this.isFalling = false;
