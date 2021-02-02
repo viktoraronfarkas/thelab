@@ -51,7 +51,6 @@ let init = () => {
 
 let gameLoop = () => {
 
-  checkForObstacles(background, player, obstacles);
   player.update();
 
   context.clearRect(0, 0, CONFIG.level.width, CONFIG.level.height); //clear canvas
@@ -59,7 +58,7 @@ let gameLoop = () => {
   cameraContext.clearRect(0, 0, CONFIG.level.width, CONFIG.level.height);
   background.render(context); // render Background
 
-  if (0 !== background.currentLevel) {
+  if (0 !== background.currentLevel && 8 !== background.currentLevel) {
     player.render(playerContext); // render Player
     camera.render(cameraContext); // render Camera
   }
@@ -94,6 +93,8 @@ let gameLoop = () => {
     camera.dir = 'left';
   }
 
+  checkForObstacles(background, player, obstacles);
+
   // call the next iteration of the gameloop
   requestAnimationFrame(gameLoop);
 }
@@ -108,6 +109,36 @@ let checkForObstacles = (bg, player, obstacles) => {
   // first wall -> only go through when running
   if (3 === bg.currentLevel && obstacles[2].walls[0].x - player.width < player.x && obstacles[2].walls[0].x + obstacles[2].walls[0].width - player.width > player.x && !player.isRunning && !player.facingLeft) {
     player.x = obstacles[2].walls[0].x - player.width;
+  }
+
+  if (player.x + player.width / 2 > CONFIG.level.width / 2 && 4 === bg.currentLevel) {
+    camera.dir = 'left';
+  }
+
+  if (player.x + player.width / 2 < CONFIG.level.width / 2 && 4 === bg.currentLevel) {
+    camera.dir = 'right';
+  }
+
+  if (player.x + player.width / 2 < CONFIG.level.width / 2 && 4 < bg.currentLevel) {
+    camera.dir = 'right';
+  }
+
+  if (5 === bg.currentLevel) {
+    player.speed = 0.1;
+  }
+
+  if (5 === bg.currentLevel && 200 < player.x && 230 > player.x) {
+    player.x = 350;
+    player.y = 300;
+  }
+
+  if (5 === bg.currentLevel && 450 < player.x && 480 > player.x) {
+    player.x = 750;
+    player.y = 0;
+  }
+
+  if (6 === bg.currentLevel) {
+    player.y = 0;
   }
 }
 
