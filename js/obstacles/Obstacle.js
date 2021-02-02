@@ -1,10 +1,10 @@
 class Obstacle {
-  constructor() {
-    this.level = null;
-    this.x = null;
-    this.y = null;
-    this.width = null;
-    this.height = null;
+  constructor(obj) {
+    this.level = obj.level;
+    this.x = obj.x;
+    this.y = obj.y;
+    this.width = obj.width;
+    this.height = obj.height;
   }
 
   getBoundingBox() {

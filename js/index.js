@@ -1,10 +1,8 @@
 import Player from './Player.js';
 import Camera from './Camera.js';
 import Background from './Background.js';
-import Hole from './obstacles/Hole.js';
-import Wall from './obstacles/Wall.js';
 import CONFIG from './config.js';
-import { renderText, setupCanvas } from './utils.js';
+import { renderText, setupCanvas, setupObstacles } from './utils.js';
 
 let context;
 let textContext;
@@ -14,6 +12,7 @@ let player;
 let camera;
 let background;
 let currentKeys = [];
+let obstacles = setupObstacles();
 
 let init = () => {
   console.log('Hello World!');
@@ -51,6 +50,8 @@ let init = () => {
 }
 
 let gameLoop = () => {
+
+  checkForObstacles(background, player, obstacles);
   player.update();
 
   context.clearRect(0, 0, CONFIG.level.width, CONFIG.level.height); //clear canvas
@@ -65,6 +66,7 @@ let gameLoop = () => {
 
   textContext.clearRect(0, 0, CONFIG.level.width, CONFIG.level.height);
 
+  // render Start text only on level 0
   if (0 === background.currentLevel) {
     renderText(textContext);
   } else {
@@ -96,6 +98,13 @@ let gameLoop = () => {
   requestAnimationFrame(gameLoop);
 }
 
+let checkForObstacles = (bg, player, obstacles) => {
+  // first hole
+  if (2 === bg.currentLevel && obstacles[1].holes[0].x < player.x && obstacles[1].holes[0].x + obstacles[1].holes[0].width > player.x && !player.isJumping) {
+    player.isFalling = true;
+    player.y++;
+  }
+}
 
 window.addEventListener('load', function() {
   init();

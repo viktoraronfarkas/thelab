@@ -20,6 +20,7 @@ class Player {
     this.isWalking = null;
     this.isRunning = false;
     this.isJumping = false;
+    this.isFalling = false;
     this.facingLeft = false;
     this.ticks = 0;
     this.lastRenderedTime = null;
@@ -99,10 +100,14 @@ class Player {
       this.x = this.width / 2;
     }
 
-    if (this.y + this.height / 2 > CONFIG.level.groundPosition) {
+    if (this.y + this.height / 2 > CONFIG.level.groundPosition && !this.isFalling) {
       this.y = CONFIG.level.groundPosition - this.height / 2;
       this.isJumping = false;
       this.vY = 0;
+    } else if (this.isFalling && this.y + this.height / 2 > CONFIG.level.height) {
+      this.y = 0;
+      this.isJumping = false;
+      this.isFalling = false;
     }
   }
 
