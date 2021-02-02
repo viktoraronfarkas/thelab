@@ -4,6 +4,7 @@ export default {
     width: 1200,
     height: 675,
     groundPosition: 577,
+    holeHeight: 300,
   },
   player: {
     width: 129,

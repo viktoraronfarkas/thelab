@@ -1,6 +1,8 @@
 import Player from './Player.js';
 import Camera from './Camera.js';
 import Background from './Background.js';
+import Hole from './obstacles/Hole.js';
+import Wall from './obstacles/Wall.js';
 import CONFIG from './config.js';
 import { renderText, setupCanvas } from './utils.js';
 
