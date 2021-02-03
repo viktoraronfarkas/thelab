@@ -38,5 +38,5 @@ export default {
       frames: 4,
       fpt: 0.3,
     },
-  },
+  }
 }
