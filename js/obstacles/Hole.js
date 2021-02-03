@@ -1,5 +1,5 @@
 import Obstacle from './Obstacle.js';
-import CONFIG from '/js/config.js';
+import CONFIG from '../config.js';
 
 class Hole extends Obstacle {
   constructor(obj) {
